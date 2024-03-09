@@ -20,40 +20,29 @@ import javax.persistence.Table;
 @Table(name = "t_department")
 public class Department {
 
-    /**
-     * 部门id
-     */
+    /** 部门id */
     @Id
     private Long id;
 
-    /**
-     * 部门编号
-     */
+    /** 部门编号 */
     private String sn;
 
-    /**
-     * 部门名称
-     */
+    /** 部门名称 */
     private String name;
 
     /**
-     * 部门状态 1：启用，0：禁用
+     * 部门状态
+     * 1：启用，0：禁用
      */
     private Integer state = 1;
 
-    /**
-     * 部门经理id
-     */
+    /** 部门经理id */
     private Long managerId;
 
-    /**
-     * 上级部门id
-     */
+    /** 上级部门id */
     private Long parentId;
 
-    /**
-     * 部门路径：用于无限极树等
-     */
+    /** 部门路径 */
     private String dirPath;
 
 }
