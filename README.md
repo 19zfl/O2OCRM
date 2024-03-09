@@ -35,6 +35,17 @@
 
 **注解**：
 
-| 注解名称    | 注解作用                                                     |
-| ----------- | ------------------------------------------------------------ |
-| @MapperScan | 添加@MapperScan(“com.o2ocrm.\*.mapper”)注解以后，com.o2ocrm.*.mapper包下面所有的接口类，在编译之后都会生成相应的实现类，在不使用@MapperScan前，我们需要直接在Mapper类上面添加注解@Mapper，这种方式要求每一个Mapper类都需要添加此注解，非常麻烦，属于重复劳动。通过使用@MapperScan注解，可以让我们不用为每个Mapper类都添加@Mapper注解。 |
+| 注解名称      | 注解作用                                                     |
+| ------------- | ------------------------------------------------------------ |
+| @Controller   |                                                              |
+| @MapperScan   | 添加@MapperScan(“com.o2ocrm.\*.mapper”)注解以后，com.o2ocrm.*.mapper包下面所有的接口类，在编译之后都会生成相应的实现类，在不使用@MapperScan前，我们需要直接在Mapper类上面添加注解@Mapper，这种方式要求每一个Mapper类都需要添加此注解，非常麻烦，属于重复劳动。通过使用@MapperScan注解，可以让我们不用为每个Mapper类都添加@Mapper注解。 |
+| @PathVariable |                                                              |
+| @RequestBody  |                                                              |
+| @ResponseBody |                                                              |
+
+**请求status**：
+
+| 状态码 | 含义         |
+| ------ | ------------ |
+| 405    | 请求方式错误 |
+
