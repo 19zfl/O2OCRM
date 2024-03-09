@@ -1,5 +1,7 @@
 package com.o2ocrm.basic.query;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -11,16 +13,19 @@ import lombok.Data;
  */
 
 @Data
+@ApiModel(value = "BaseQuery", description = "分页参数")
 public class BaseQuery {
 
     /**
      * 页码
      */
+    @ApiModelProperty(value = "页码")
     private Integer pageNum;
 
     /**
      * 每页条数
      */
+    @ApiModelProperty(value = "每页条数")
     private Integer pageSize;
 
 }

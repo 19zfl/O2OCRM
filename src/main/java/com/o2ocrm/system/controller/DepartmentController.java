@@ -4,6 +4,9 @@ import com.o2ocrm.basic.query.BaseQuery;
 import com.o2ocrm.basic.vo.AjaxResult;
 import com.o2ocrm.system.domain.Department;
 import com.o2ocrm.system.service.IDepartmentService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -17,6 +20,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/system/dept")
+@Api(value = "DepartmentController", tags = {"部门模块接口"})
 public class DepartmentController {
 
     @Resource
@@ -27,6 +31,7 @@ public class DepartmentController {
      * @return 部门信息数据
      */
     @GetMapping("/all")
+    @ApiOperation(value = "获取部门信息", notes = "获取部门信息")
     public AjaxResult getAllDeptInfo() {
         return AjaxResult.success(deptService.getAllDeptInfo());
     }
@@ -37,7 +42,8 @@ public class DepartmentController {
      * @return 部门列表
      */
     @PostMapping("/list")
-    public AjaxResult getAllDeptInfoByPageList(@RequestBody BaseQuery query) {
+    @ApiOperation(value = "获取部门列表", notes = "获取部门列表")
+    public AjaxResult getAllDeptInfoByPageList(@ApiParam(value = "分页参数", required = true) @RequestBody BaseQuery query) {
         return AjaxResult.success(deptService.getAllDeptInfoByPageList(query));
     }
 
@@ -47,6 +53,7 @@ public class DepartmentController {
      * @return 返回信息
      */
     @DeleteMapping("/{id}")
+    @ApiOperation(value = "删除部门", notes = "删除部门")
     public AjaxResult deleteDeptInfoById(@PathVariable Long id) {
         try {
             deptService.deleteDeptInfoById(id);
@@ -63,6 +70,7 @@ public class DepartmentController {
      * @return 返回消息
      */
     @PostMapping("/edit")
+    @ApiOperation(value = "部门新增和修改", notes = "部门新增和修改")
     public AjaxResult insertAndModify(@RequestBody Department dept) {
         try {
             deptService.insertAndModify(dept);

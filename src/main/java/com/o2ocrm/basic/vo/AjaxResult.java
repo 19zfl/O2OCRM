@@ -1,5 +1,6 @@
 package com.o2ocrm.basic.vo;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ApiModel(value = "AjaxResult", description = "数据统一返回前端的实体类")
 public class AjaxResult {
 
     /** 状态码 */

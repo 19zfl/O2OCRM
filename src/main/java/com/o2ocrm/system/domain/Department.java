@@ -1,5 +1,6 @@
 package com.o2ocrm.system.domain;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "t_department")
+@ApiModel(value = "Department", description = "部门实体类")
 public class Department {
 
     /** 部门id */
