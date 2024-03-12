@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>基于浏览器的本地存储</title>
+    <script type="text/javascript">
+        //sessionStorage 会话存储，当前窗口有效
+        //localStorage 持久化存储，永远有效，只要不删除
+        // function add() {
+        //     sessionStorage.setItem("user","{'name':'zs','age':18}")
+        // }
+        // function del() {
+        //     sessionStorage.removeItem("user")
+        // }
+        // function update() {
+        //     sessionStorage.setItem("user","{'name':'ls','age':18}")
+        // }
+        // function get() {
+        //     alert(sessionStorage.getItem("user"));
+        // }
+        function add() {
+
+            localStorage.setItem("user","{'name':'zs','age':18}")
+        }
+        function del() {
+            localStorage.removeItem("user")
+        }
+        function update() {
+            localStorage.setItem("user","{'name':'ls','age':18}")
+        }
+        function get() {
+            alert(localStorage.getItem("user"));
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="添加" onclick="add()">
+<input type="button" value="删除" onclick="del()">
+<input type="button" value="更新" onclick="update()">
+<input type="button" value="查询" onclick="get()">
+
+</body>
+</html>

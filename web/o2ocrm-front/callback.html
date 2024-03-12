@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="./plugins/vue/dist/vue.min.js"></script>
+    <script type="text/javascript" src="./plugins/axios/dist/axios.min.js"></script>
+    <!--引入公共的js-->
+    <script type="text/javascript" src="./js/common.js"></script>
+</head>
+<body>
+<div id="app"></div>
+</body>
+<script type="text/javascript">
+    new Vue({
+        el: "#app",
+        mounted() {
+            //获取当前页面?后面的参数，最终封装成一个json对象
+            let param = getParam();//获取访问当前页面URL后面，拼接的参数
+            //处理回调接口【异步请求】
+            this.$http.post("/wechat/handleCallback", param).then(res => {
+                let {success, message, data} = res.data;
+                console.log(">>>>>res.data====" + JSON.stringify(res.data));
+                //如果success为true，并且openid有值，就证明它要跳转到绑定界面，用户和微信进行绑定
+                console.log("success==false===>" + (success == false) + ",success=='false'===>" + (success == 'false'));
+                if (success == false) {//跳绑定页面
+                    //这个操作，不是通过路由跳，不存在token是否必须
+                    location.href = "/binder.html?openid=" + data
+                } else if (success) {//代表已经登录了
+                    //把登录用户保存到浏览器里面
+                    localStorage.setItem("token", data.token);
+                    localStorage.setItem("loginUser", JSON.stringify(data.loginUser));
+                    location.href = "/index.html";
+                }
+
+            });
+        }
+    })
+</script>
+</html>

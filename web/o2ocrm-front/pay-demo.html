@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>支付宝支付示例</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+    <script type="text/javascript" src="./js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="./plugins/vue/dist/vue.min.js"></script>
+    <script type="text/javascript" src="./plugins/axios/dist/axios.min.js"></script>
+    <!--引入公共的js-->
+    <script type="text/javascript" src="./js/common.js"></script>
+</head>
+<body>
+<div id="mydiv">
+    <div id="app" style="margin-left: 100px;margin-right: 100px">
+        <input v-model="param.shopId" style="width: 100%" type="text"
+               placeholder="请输入店铺的ID（这个值是要与数据库t_pay_alipay_info表所配置的店铺ID对应的）"><br/>
+        <input v-model="param.subject" style="width: 100%" type="text" placeholder="请输入商品名称"><br/>
+        <input v-model="param.money" style="width: 100%" type="number" placeholder="请输入商品支付金额">
+        <input v-model="param.subjectDesc" style="width: 100%" type="text" placeholder="商品描述">
+        <button type="button" @click="toPay">支付宝支付</button>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                param: {
+                    orderNo: '',
+                    subject: '',
+                    money: '',
+                    shopId: ''
+                }
+            }
+        },
+        methods: {
+            toPay() {
+                this.$http.post("/pay/gobuy", this.param).then(res => {
+                    console.log(">>>>>>>>>>" + res.data)
+                    console.log($("#mydiv").html)
+                    //html方法：渲染一段html代码用的，jQuery的方法
+                    $("#mydiv").html(res.data)
+                })
+            }
+        }
+    })
+</script>
+</html>

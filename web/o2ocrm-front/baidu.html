@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="//api.map.baidu.com/api?type=webgl&v=1.0&ak=8W9k0LmDxj1EsdkyIpCCXMQGWYKDYFsF"></script>
+    <title>根据城市名称定位</title>
+    <style>
+        html, body, #allmap{
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+        #result{
+            padding: 7px 10px;
+            position: fixed;
+            top: 10px;
+            left: 20px;
+            width: 300px;
+            background: #fff;
+            box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
+            border-radius: 7px;
+            z-index: 99;
+        }
+        #cityName{
+            width:170px;
+            margin-right:10px;
+            height:25px;
+            border: 1px solid rgba(27, 142, 236, 0.5);
+            border-radius: 5px;
+        }
+        #result button{
+            border: 1px solid rgba(27, 142, 236, 0.5);
+            border-radius: 5px;
+            background: rgba(27, 142, 236, 0.5);
+            color: #fff
+        }
+    </style>
+</head>
+<body>
+<div id='allmap'></div>
+<div id='result'>
+    城市名: <input id="cityName" type="text"/>
+    <button onclick="theLocation()"/>查询</button>
+</div>
+<script>
+    // 百度地图API功能
+    var map = new BMapGL.Map("allmap");
+    //根据经纬度设置城市中心点
+    var point = new BMapGL.Point(104.85 ,29.81);
+
+    // 创建点标记
+    var marker1 = new BMapGL.Marker(new BMapGL.Point(104.85 ,29.81));
+    map.addOverlay(marker1);
+    //设置中心点，并且设置查看等级
+    map.centerAndZoom(point,12);
+
+    // 创建信息窗口
+    var opts = {
+        width: 200,
+        height: 100,
+        title: '大资中'
+    };
+    var infoWindow = new BMapGL.InfoWindow('地址：资中是孔子的老师家乡苌弘', opts);
+    // 点标记添加点击事件
+    marker1.addEventListener('click', function () {
+        map.openInfoWindow(infoWindow, point); // 开启信息窗口
+    });
+
+    function theLocation(){
+        var city = document.getElementById("cityName").value;
+        if(city != ""){
+            map.centerAndZoom(city,11);      // 用城市名设置地图中心点
+        }
+    }
+</script>
+</body>
+</html>
