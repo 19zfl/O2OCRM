@@ -20,7 +20,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '组织机构',
-        leaf: true,//只有一个节点
+        // leaf: true,//只有一个节点
         iconCls: 'el-icon-s-home',
         children: [
             { path: '/dept', component: Department, name: '部门管理'}
