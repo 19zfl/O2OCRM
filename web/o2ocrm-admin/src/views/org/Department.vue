@@ -158,9 +158,9 @@
                     parentId: null
                 },
                 dept: [],
-                total: 0,
-                page: 1,
-                size: 10,
+                total: 0, // 分页总条数
+                page: 1,  // 页码
+                size: 10, // 每页条数
                 listLoading: false,
                 sels: [],//列表选中列
                 addFormVisible: false,//新增界面是否显示
@@ -223,11 +223,10 @@
                 };
                 this.listLoading = true;
                 //NProgress.start();
-                this.$http.post("/dept/findPage", para).then((res) => {
+                this.$http.post("/system/dept/list", para).then((res) => {
                     console.log(res)
                     //取值
                     this.total = res.data.data.total;
-                    //
                     this.dept = res.data.data.data;
                     //关闭进度条
                     this.listLoading = false;
