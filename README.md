@@ -61,6 +61,7 @@ http://localhost:8080/swagger-ui.html
 | @PathVariable |                                                              |
 | @RequestBody  |                                                              |
 | @ResponseBody |                                                              |
+| @Transient    | 被注解的字段用于接受sql中的字段传递，不参与CRUD              |
 
 #### 请求status：
 
