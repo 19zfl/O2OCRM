@@ -47,7 +47,7 @@ public class DepartmentServiceImpl implements IDepartmentService {
         // 设置分页参数
         PageHelper.startPage(baseQuery.getPageNum(), baseQuery.getPageSize());
         // 执行查询操作
-        List<Department> deptList = deptMapper.selectAll();
+        List<Department> deptList = deptMapper.getAllDeptListBySql();
         // 封装分页数据
         PageInfo<Department> deptListByPageInfo = new PageInfo<>(deptList);
         // 将分页数据封装进PageList中
@@ -73,7 +73,7 @@ public class DepartmentServiceImpl implements IDepartmentService {
     @Override
     public void insertAndModify(Department department) {
         // 判断department中id是否为空值
-        if (department.getId() == null ) {
+        if (department.getId() == null) {
             // 为空：新增操作
             deptMapper.insertSelective(department);
         } else {
