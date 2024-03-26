@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @ClassName:Department
@@ -46,5 +47,13 @@ public class Department {
 
     /** 部门路径 */
     private String dirPath;
+
+    /** 部门经理名字 */
+    @Transient
+    private String managerName;
+
+    /** 上级部门名称 */
+    @Transient
+    private String parentName;
 
 }
