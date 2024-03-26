@@ -21,4 +21,6 @@ logging:
   level:
     com:
       o2ocrm: debug #日志打印
-
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true # 开启mybatis的驼峰转换，当手写sql语句时必须启用
