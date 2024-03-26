@@ -84,7 +84,7 @@
             <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
             <!--			current-change:自带的事件,我当前页发生改变时,就会触发此事件-->
             <el-pagination layout="total, sizes, prev, pager, next, jumper"
-                           :page-sizes="[5, 10, 50, 100]"
+                           :page-sizes="[5, 10, 20, 50]"
                            @current-change="handleCurrentChange"
                            @size-change="handleSizeChange"
                            :page-size="size"
@@ -159,11 +159,11 @@
                 },
                 dept: [],
                 total: 0, // 分页总条数
-                page: 1,  // 页码
-                size: 10, // 每页条数
+                pageNum: 1,  // 页码
+                pageSize: 10, // 每页条数
                 listLoading: false,
                 sels: [],//列表选中列
-                addFormVisible: false,//新增界面是否显示
+                addFormVisible: false, //新增界面是否显示
                 addLoading: false,
                 addFormRules: {
                     name: [
@@ -199,13 +199,13 @@
             //val:点第5页val就是5
             handleCurrentChange(val) {
                 //var 就是当前页的数据
-                this.page = val;
+                this.pageNum = val;
                 this.getdept();
             },
             //val:选择每页多少条就是多少条
             handleSizeChange(val) {
                 //var 就是当前页的数据
-                this.size = val;
+                this.pageSize = val;
                 this.getdept();
             },
             //获取部门列表
@@ -213,9 +213,9 @@
                 //封装的数据
                 let para = {
                     //page 就是当前页
-                    pageNum: this.page,
+                    pageNum: this.pageNum,
                     //size 就是每页条数
-                    pageSize: this.size,
+                    pageSize: this.pageSize,
                     //这个是高级查询的条件
                     keyword: this.filters.name, //部门名称
                     managerId: this.filters.managerId,
@@ -224,10 +224,10 @@
                 this.listLoading = true;
                 //NProgress.start();
                 this.$http.post("/system/dept/list", para).then((res) => {
-                    console.log(res)
+                    let listData = res.data.data
                     //取值
-                    this.total = res.data.data.total;
-                    this.dept = res.data.data.data;
+                    this.total = listData.total;
+                    this.dept = listData.list;
                     //关闭进度条
                     this.listLoading = false;
                 });
@@ -276,7 +276,7 @@
             },
             //显示新增界面
             handleAdd: function () {
-                this.addFormVisible = true;
+                this.addFormVisible = true; // 弹出新增界面模态框
                 this.addForm = {
                     name: '',
                     sn: ''
@@ -358,9 +358,10 @@
             },
             getEmployees() {
                 //发一个axios异步请求
-                this.$http.get("/emp/findAll").then(res => {
-                    console.log(res.data.data)
-                    this.employees = res.data.data;
+                this.$http.get("/system/emp/all").then(res => {
+                    console.log(res)
+                    let empList = res.data.data
+                    this.employees = empList
                 })
             },
             treeDept() {
