@@ -23,6 +23,7 @@ import javax.annotation.Resource;
 @Api(value = "DepartmentController", tags = {"部门模块接口"})
 public class DepartmentController {
 
+    /** 注入业务层接口实现类 */
     @Resource
     private IDepartmentService deptService;
 
