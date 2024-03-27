@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @ClassName:DepartmentController
@@ -79,6 +80,36 @@ public class DepartmentController {
         } catch (Exception e) {
             e.printStackTrace();
             return AjaxResult.error("操作失败！");
+        }
+    }
+
+    /**
+     * 获取部门含子集的数据
+     * @return 返回部门数据含子集
+     */
+    @GetMapping("/tree")
+    @ApiOperation(value = "部门无限极树列表展示", notes = "新增模态框中部门无限极树列表展示")
+    public AjaxResult getTreeDeptList() {
+        try {
+            List<Department> treeDeptList = deptService.getTreeDeptList();
+            return AjaxResult.success(treeDeptList);
+        } catch (Exception e) {
+            return AjaxResult.error("获取树失败！");
+        }
+    }
+
+    /**
+     * 获取父级部门
+     * @return 返回父级部门
+     */
+    @GetMapping("/parent")
+    @ApiOperation(value = "首页父级部门下拉列表", notes = "部门模块首页父级部门下拉列表展示")
+    public AjaxResult getParentDeptList() {
+        try {
+            List<Department> parentDeptList = deptService.getParentDeptList();
+            return AjaxResult.success(parentDeptList);
+        } catch (Exception e) {
+            return AjaxResult.error("父级部门获取失败！");
         }
     }
 

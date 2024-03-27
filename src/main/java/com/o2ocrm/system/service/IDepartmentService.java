@@ -41,4 +41,16 @@ public interface IDepartmentService {
      */
     void insertAndModify(Department department);
 
+    /**
+     * 获取部门含子集的数据
+     * @return 返回部门数据含子集
+     */
+    List<Department> getTreeDeptList();
+
+    /**
+     * 获取父级部门
+     * @return 返回父级部门
+     */
+    List<Department> getParentDeptList();
+
 }

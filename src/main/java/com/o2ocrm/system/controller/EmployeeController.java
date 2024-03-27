@@ -1,13 +1,16 @@
 package com.o2ocrm.system.controller;
 
+import com.o2ocrm.basic.query.BaseQuery;
 import com.o2ocrm.basic.vo.AjaxResult;
+import com.o2ocrm.system.domain.Employee;
 import com.o2ocrm.system.service.IEmployeeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @ClassName:EmployeeController
@@ -33,6 +36,63 @@ public class EmployeeController {
     @ApiOperation(value = "获取员工信息", notes = "获取员工信息")
     public AjaxResult getAllEmpInfo() {
         return AjaxResult.success(empService.getAllEmpInfo());
+    }
+
+    /**
+     * 获取员工列表
+     * @param query 分页参数
+     * @return 员工列表
+     */
+    @PostMapping("/list")
+    @ApiOperation(value = "获取员工列表", notes = "获取员工列表")
+    public AjaxResult getAllEmpInfoByPageList(@ApiParam(value = "分页参数", required = true) @RequestBody BaseQuery query) {
+        return AjaxResult.success(empService.getAllEmpInfoByPageList(query));
+    }
+
+    /**
+     * 删除员工
+     * @param id 员工主键id
+     * @return 返回信息
+     */
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "删除员工", notes = "删除员工")
+    public AjaxResult deleteEmpInfoById(@PathVariable Long id) {
+        try {
+            empService.deleteEmpInfoById(id);
+            return AjaxResult.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return AjaxResult.error("删除失败！");
+        }
+    }
+
+    /**
+     * 员工新增和修改
+     * @param emp 员工信息
+     * @return 返回消息
+     */
+    @PostMapping("/edit")
+    @ApiOperation(value = "员工新增和修改", notes = "员工新增和修改")
+    public AjaxResult insertAndModify(@RequestBody Employee emp) {
+        try {
+            empService.insertAndModify(emp);
+            return AjaxResult.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return AjaxResult.error("操作失败！");
+        }
+    }
+
+    @GetMapping("/has/dept")
+    @ApiOperation(value = "获取管理部门的经理列表", notes = "获取管理部门的经理列表")
+    public AjaxResult getHasDeptManagerList() {
+        try {
+            List<Employee> hasDeptManagerList = empService.getHasDeptManagerList();
+            return AjaxResult.success(hasDeptManagerList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return AjaxResult.error("经理列表获取失败！");
+        }
     }
 
 }

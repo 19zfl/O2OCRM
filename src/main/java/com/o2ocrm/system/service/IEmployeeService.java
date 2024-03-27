@@ -41,4 +41,10 @@ public interface IEmployeeService {
      */
     void insertAndModify(Employee employee);
 
+    /**
+     * 获取管理着部门的员工数据
+     * @return 返回管理着部门的员工数据
+     */
+    List<Employee> getHasDeptManagerList();
+
 }

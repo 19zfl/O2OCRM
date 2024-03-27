@@ -4,12 +4,16 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.o2ocrm.basic.query.BaseQuery;
 import com.o2ocrm.basic.query.PageList;
+import com.o2ocrm.system.domain.Department;
 import com.o2ocrm.system.domain.Employee;
+import com.o2ocrm.system.mapper.DepartmentMapper;
 import com.o2ocrm.system.mapper.EmployeeMapper;
 import com.o2ocrm.system.service.IEmployeeService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -78,5 +82,34 @@ public class EmployeeServiceImpl implements IEmployeeService {
             // 不为空：修改操作
             empMapper.updateByPrimaryKeySelective(employee);
         }
+    }
+
+    /** 注入Department业务层接口实现类 */
+    @Resource
+    private DepartmentMapper deptMapper;
+
+    /**
+     * 获取管理着部门的员工数据
+     * @return 返回管理着部门的员工数据
+     */
+    @Override
+    public List<Employee> getHasDeptManagerList() {
+        // 创建空List存放管理员id
+        List<Long> idList = new ArrayList<>();
+        // 创建空List存放经理数据
+        List<Employee> empList = new ArrayList<>();
+        // 获取所有部门数据
+        List<Department> deptList = deptMapper.selectAll();
+        // 遍历deptList，从中获取到有managerId的部门数据
+        for (Department dept : deptList) {
+            if (dept.getManagerId() != null && !StringUtils.isEmpty(dept.getManagerId())) {
+                if (!idList.contains(dept.getManagerId())) idList.add(dept.getManagerId());
+            }
+        }
+        // 通过idList中的id获取到相应id的员工信息
+        for (Long id : idList) {
+            empList.add(empMapper.selectByPrimaryKey(id));
+        }
+        return empList;
     }
 }

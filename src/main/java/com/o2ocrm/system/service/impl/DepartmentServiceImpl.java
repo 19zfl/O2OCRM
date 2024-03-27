@@ -8,9 +8,13 @@ import com.o2ocrm.system.domain.Department;
 import com.o2ocrm.system.mapper.DepartmentMapper;
 import com.o2ocrm.system.service.IDepartmentService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName:DepartmentServiceImpl
@@ -68,17 +72,83 @@ public class DepartmentServiceImpl implements IDepartmentService {
     /**
      * 新增部门和修改部门信息
      * 通过参数department的id值来判断是新增还是修改，如果id为空，则为新增，如果id有值，则是修改
-     * @param department
+     * @param dept
      */
     @Override
-    public void insertAndModify(Department department) {
+    public void insertAndModify(Department dept) {
         // 判断department中id是否为空值
-        if (department.getId() == null) {
+        if (dept.getId() == null) {
             // 为空：新增操作
-            deptMapper.insertSelective(department);
+            // 正常执行新增操作
+            deptMapper.insertSelective(dept);
+            // 获取此数据的父级id数组
+            Long[] parentIds = dept.getParentIds();
+            // 创建字符串操作对象StringBuffer
+            StringBuffer sb = new StringBuffer();
+            // 判空
+            if (parentIds != null && parentIds.length > 0) {
+                for (Long ids : parentIds) {
+                    sb.append("/" + ids);
+                }
+                sb.append("/" + dept.getId());
+            }
+            dept.setDirPath(sb.toString());
+            dept.setParentId(parentIds[parentIds.length - 1]);
+            deptMapper.updateByPrimaryKeySelective(dept);
         } else {
             // 不为空：修改操作
-            deptMapper.updateByPrimaryKeySelective(department);
+            deptMapper.updateByPrimaryKeySelective(dept);
         }
+    }
+
+    /**
+     * 获取部门含子集的数据
+     * @return 返回部门数据含子集
+     */
+    @Override
+    public List<Department> getTreeDeptList() {
+        // 获取所有部门数据
+        List<Department> deptList = deptMapper.selectAll();
+        // 创建一个空集合存放数据最后返回给前端
+        List<Department> treeDeptList = new ArrayList<>();
+        // 创建一个集合存放遍历数据
+        Map<Long, Department> map = new HashMap<>();
+        for (Department dept : deptList) {
+            map.put(dept.getId(), dept);
+        }
+        // 遍历部门数据
+        for (Department dept : deptList) {
+            // 判断是否有父级id
+            if (dept.getParentId() == null) {
+                // 没有，说明是顶级
+                treeDeptList.add(dept);
+            } else {
+                // 有，将自己存入父级对象的子集中
+                // 通过子级部门的parentId拿到父级部门对象
+                Department parentDept = map.get(dept.getParentId());
+                // 将自己存入父级对象中
+                parentDept.getChildren().add(dept);
+            }
+        }
+        return treeDeptList;
+    }
+
+    /**
+     * 获取父级部门
+     * @return 返回父级部门
+     */
+    @Override
+    public List<Department> getParentDeptList() {
+        // 获取所有部门数据
+        List<Department> deptList = deptMapper.selectAll();
+        // 创建空集合存放父级部门数据
+        List<Department> parentList = new ArrayList<>();
+        // 遍历取出父级部门
+        for (Department dept : deptList) {
+            if (dept.getParentId() == null && StringUtils.isEmpty(dept.getParentId())) {
+                parentList.add(dept);
+            }
+        }
+        return parentList;
     }
 }

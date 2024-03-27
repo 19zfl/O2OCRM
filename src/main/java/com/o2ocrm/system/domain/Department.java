@@ -1,13 +1,14 @@
 package com.o2ocrm.system.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @ClassName:Department
@@ -25,6 +26,7 @@ public class Department {
 
     /** 部门id */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /** 部门编号 */
@@ -55,5 +57,14 @@ public class Department {
     /** 上级部门名称 */
     @Transient
     private String parentName;
+
+    /** 子部门集合 */
+    @Transient
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Department> children = new ArrayList<>();
+
+    /** 部门数据结构 */
+    @Transient
+    private Long[] parentIds;
 
 }

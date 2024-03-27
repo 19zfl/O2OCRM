@@ -36,7 +36,7 @@
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button type="primary" v-on:click="getdept">查询</el-button>
+                    <el-button type="primary" v-on:click="getDeptListByPageList">查询</el-button>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="handleAdd">新增</el-button>
@@ -124,13 +124,13 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="上级部门">
-                    <!--:options="treeDepts" ：数据源
+                    <!--:options="treeDeptList" ：数据源
                     props：属性
                     v-model:前面没有冒号
                     -->
                     <el-cascader
                             v-model="addForm.parentIds"
-                            :options="treeDepts"
+                            :options="treeDeptList"
                             :props="{ checkStrictly: true,value:'id',label:'name' }"
                             clearable></el-cascader>
                 </el-form-item>
@@ -148,7 +148,7 @@
         data() {
             return {
                 state: true,
-                treeDepts: [],
+                treeDeptList: [],
                 employees: [],
                 managers: [],
                 parentDepts: [],
@@ -200,16 +200,16 @@
             handleCurrentChange(val) {
                 //var 就是当前页的数据
                 this.pageNum = val;
-                this.getdept();
+                this.getDeptListByPageList();
             },
             //val:选择每页多少条就是多少条
             handleSizeChange(val) {
                 //var 就是当前页的数据
                 this.pageSize = val;
-                this.getdept();
+                this.getDeptListByPageList();
             },
             //获取部门列表
-            getdept() {
+            getDeptListByPageList() {
                 //封装的数据
                 let para = {
                     //page 就是当前页
@@ -248,7 +248,7 @@
                             message: '删除成功',
                             type: 'success'
                         });
-                        this.getdept();
+                        this.getDeptListByPageList();
                     });
                 }).catch(() => {
 
@@ -299,8 +299,8 @@
                                 this.addForm.parentId = null;
                             }
 */
-                            let para = Object.assign({}, this.addForm);
-                            this.$http.post("/dept/saveOrUpdate", para).then((res) => {
+                            let param = Object.assign({}, this.addForm);
+                            this.$http.post("/system/dept/edit", param).then((res) => {
                                 this.addLoading = false;
                                 //elementUi的提示弹框
                                 this.$message({
@@ -310,8 +310,10 @@
                                 //重新set数据
                                 this.$refs['addForm'].resetFields();
                                 this.addFormVisible = false;
-                                this.getdept();
+                                this.getDeptListByPageList();
                             });
+                        }).catch(res => {
+                          this.$message.error("你已取消！")
                         });
                     }
                 });
@@ -337,25 +339,27 @@
                             message: '删除成功',
                             type: 'success'
                         });
-                        this.getdept();
+                        this.getDeptListByPageList();
                     });
                 }).catch(() => {
 
                 });
             },
-            findManagers() {
+            getHasDeptManagerList() {
                 //发一个axios异步请求
-                this.$http.get("/emp/findManagers").then(res => {
+                this.$http.get("/system/emp/has/dept").then(res => {
+                  console.log(res)
                     this.managers = res.data.data;
                 })
 
             },
-            findParentDepts() {
+            getParentDeptList() {
                 //发一个axios异步请求
-                this.$http.get("/dept/findParentDepts").then(res => {
+                this.$http.get("/system/dept/parent").then(res => {
                     this.parentDepts = res.data.data;
                 })
             },
+            // 新增模态框员工列表
             getEmployees() {
                 //发一个axios异步请求
                 this.$http.get("/system/emp/all").then(res => {
@@ -364,10 +368,10 @@
                     this.employees = empList
                 })
             },
-            treeDept() {
+            getTreeDeptList() {
                 //发一个axios异步请求
-                this.$http.get("/dept/treeDept").then(res => {
-                    this.treeDepts = res.data.data;
+                this.$http.get("/system/dept/tree").then(res => {
+                    this.treeDeptList = res.data.data;
                 })
             }
 
@@ -376,15 +380,15 @@
         //就是页面已加载完成就会去触发这个mounted
         mounted() {
             //获取部门列表
-            this.getdept();
+            this.getDeptListByPageList();
             //查询员工经理们
-            this.findManagers();
+            this.getHasDeptManagerList();
             //查询上级部门
-            this.findParentDepts();
+            this.getParentDeptList();
             //查询所有的员工
             this.getEmployees();
             //查询部门树形结构
-            this.treeDept();
+            this.getTreeDeptList();
         }
     }
 
