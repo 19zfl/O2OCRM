@@ -3,6 +3,7 @@ import NotFound from './views/404.vue'
 import echarts from './views/charts/echarts.vue'
 import Home from "./views/Home.vue";
 import Department from "./views/org/Department.vue";
+import Employee from "./views/org/Employee.vue";
 
 
 let routes = [
@@ -23,7 +24,8 @@ let routes = [
         // leaf: true,//只有一个节点
         iconCls: 'el-icon-s-home',
         children: [
-            { path: '/dept', component: Department, name: '部门管理'}
+            {path: '/dept', component: Department, name: '部门管理'},
+            {path: '/emp', component: Employee, name: '员工管理'}
         ]
     },
     {
