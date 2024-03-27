@@ -54,19 +54,22 @@ http://localhost:8080/swagger-ui.html
 
 #### 注解：
 
-| 注解名称      | 注解作用                                                     |
-| ------------- | ------------------------------------------------------------ |
-| @Controller   |                                                              |
-| @MapperScan   | 添加@MapperScan(“com.o2ocrm.\*.mapper”)注解以后，com.o2ocrm.*.mapper包下面所有的接口类，在编译之后都会生成相应的实现类，在不使用@MapperScan前，我们需要直接在Mapper类上面添加注解@Mapper，这种方式要求每一个Mapper类都需要添加此注解，非常麻烦，属于重复劳动。通过使用@MapperScan注解，可以让我们不用为每个Mapper类都添加@Mapper注解。 |
-| @PathVariable |                                                              |
-| @RequestBody  |                                                              |
-| @ResponseBody |                                                              |
-| @Transient    | 被注解的字段用于接受sql中的字段传递，不参与CRUD              |
+| 注解名称                                            | 注解作用                                                     |
+| --------------------------------------------------- | ------------------------------------------------------------ |
+| @Controller                                         |                                                              |
+| @GeneratedValue(strategy = GenerationType.IDENTITY) | 打在实体类id字段上，这样新增操作完成之后就能立即拿到新增数据的id |
+| @JsonInclude(JsonInclude.Include.NON_EMPTY)         | 用来给实体类的某个字段，如果这个字段为空，则进行忽略         |
+| @MapperScan                                         | 添加@MapperScan(“com.o2ocrm.\*.mapper”)注解以后，com.o2ocrm.*.mapper包下面所有的接口类，在编译之后都会生成相应的实现类，在不使用@MapperScan前，我们需要直接在Mapper类上面添加注解@Mapper，这种方式要求每一个Mapper类都需要添加此注解，非常麻烦，属于重复劳动。通过使用@MapperScan注解，可以让我们不用为每个Mapper类都添加@Mapper注解。 |
+| @PathVariable                                       |                                                              |
+| @RequestBody                                        |                                                              |
+| @ResponseBody                                       |                                                              |
+| @Transient                                          | 被注解的字段用于接受sql中的字段传递，不参与CRUD              |
 
 #### 请求status：
 
 | 状态码 | 含义                                          |
 | ------ | --------------------------------------------- |
+| 400    | 参数错误                                      |
 | 403    | CORS、Access-Control-Allow-Origin，未配置跨域 |
 | 405    | 请求方式错误                                  |
 
