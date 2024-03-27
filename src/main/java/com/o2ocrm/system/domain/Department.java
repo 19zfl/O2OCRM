@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +32,11 @@ public class Department {
     private Long id;
 
     /** 部门编号 */
+//    @Size(min = 3, max = 8, message = "长度在3-8个字母或汉字！")
     private String sn;
 
     /** 部门名称 */
+//    @NotBlank(message = "不能为空！")
     private String name;
 
     /**

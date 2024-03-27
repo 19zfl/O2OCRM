@@ -1,4 +1,4 @@
-package com.o2ocrm.basic.config;
+package com.o2ocrm.basic.config.cors;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

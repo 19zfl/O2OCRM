@@ -1,4 +1,4 @@
-package com.o2ocrm.basic.config;
+package com.o2ocrm.basic.config.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

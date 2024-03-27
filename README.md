@@ -63,7 +63,9 @@ http://localhost:8080/swagger-ui.html
 | @PathVariable                                       |                                                              |
 | @RequestBody                                        |                                                              |
 | @ResponseBody                                       |                                                              |
+| @RestControllerAdvice                               |                                                              |
 | @Transient                                          | 被注解的字段用于接受sql中的字段传递，不参与CRUD              |
+| @Valid                                              | 表示所有前端传递的形参参数必须通过规则校验，在实体类的字段上搭配@Size和@NotBlank等注解使用 |
 
 #### 请求status：
 
