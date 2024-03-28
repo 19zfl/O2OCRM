@@ -241,7 +241,7 @@
                     //NProgress.start();
                     let para = {id: row.id};
 
-                    this.$http.delete("/dept/" + row.id).then((res) => {
+                    this.$http.delete("/system/dept/" + row.id).then((res) => {
                         this.listLoading = false;
                         //NProgress.done();
                         this.$message({
@@ -259,13 +259,15 @@
                 //显示编辑页面的模态框
                 this.addFormVisible = true;
                 //Object.assign 是拷贝对象 BeanUtil.copyof()
-                this.state = !!row.state
+                this.state = !!row.state;
+                // this.addForm = Object.assign({}, row);
                 this.addForm = row;
                 //"dirPath":"/3/8/10"
                 var dirPath = row.dirPath;
                 if (dirPath) {
                     //1.根据/进行分隔
                     var paths = dirPath.split("/"); //["","3","8","10"]
+                  console.log(paths)
                     //2.截取数组
                     paths = paths.slice(1, paths.length - 1) //["3","8"]
                     //把数组变成数字数组
@@ -276,12 +278,17 @@
             },
             //显示新增界面
             handleAdd: function () {
-                this.addFormVisible = true; // 弹出新增界面模态框
-                this.addForm = {
-                    name: '',
-                    sn: ''
-
-                };
+                // this.addFormVisible = true; // 弹出新增界面模态框
+                // this.addForm = {
+                //     name: '',
+                //     sn: ''
+                //
+                // };
+              this.addFormVisible = true
+              this.addForm = Object.assign({} ,{})
+              this.state = false  // 新增state默认为关闭
+              this.getDeptListByPageList();
+              this.getTreeDeptList();
             },
             //新增/修改
             addSubmit: function () {
@@ -331,8 +338,8 @@
                 }).then(() => {
                     this.listLoading = true;
                     //NProgress.start();
-                    let para = {ids: ids};
-                    this.$http.post("/dept/batchDelete", para).then((res) => {
+                    let para = {ids: ids}
+                    this.$http.post("/system/dept/batch", para).then((res) => {
                         this.listLoading = false;
                         //NProgress.done();
                         this.$message({
@@ -348,7 +355,6 @@
             getHasDeptManagerList() {
                 //发一个axios异步请求
                 this.$http.get("/system/emp/has/dept").then(res => {
-                  console.log(res)
                     this.managers = res.data.data;
                 })
 
@@ -363,7 +369,6 @@
             getEmployees() {
                 //发一个axios异步请求
                 this.$http.get("/system/emp/all").then(res => {
-                    console.log(res)
                     let empList = res.data.data
                     this.employees = empList
                 })
