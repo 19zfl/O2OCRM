@@ -40,13 +40,13 @@ public class DepartmentController {
 
     /**
      * 获取部门列表
-     * @param query 分页参数
+     * @param baseQuery 分页参数
      * @return 部门列表
      */
     @PostMapping("/list")
     @ApiOperation(value = "获取部门列表", notes = "获取部门列表")
-    public AjaxResult getAllDeptInfoByPageList(@ApiParam(value = "分页参数", required = true) @RequestBody BaseQuery query) {
-        return AjaxResult.success(deptService.getAllDeptInfoByPageList(query));
+    public AjaxResult getAllDeptInfoByPageList(@ApiParam(value = "分页参数", required = true) @RequestBody BaseQuery baseQuery) {
+        return AjaxResult.success(deptService.getAllDeptInfoByPageList(baseQuery));
     }
 
     /**
@@ -63,6 +63,23 @@ public class DepartmentController {
         } catch (Exception e) {
             e.printStackTrace();
             return AjaxResult.error("删除失败！");
+        }
+    }
+
+    /**
+     * 批量删除部门
+     * @param query 部门id数组
+     * @return 返回信息
+     */
+    @PostMapping("/batch")
+    @ApiOperation(value = "批量删除部门", notes = "批量删除部门")
+    public AjaxResult batchDeleteDeptInfoByIds(@RequestBody BaseQuery query) {
+        try {
+            deptService.batchDeleteDeptInfoByIds(query);
+            return AjaxResult.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return AjaxResult.error("批量删除失败！");
         }
     }
 
