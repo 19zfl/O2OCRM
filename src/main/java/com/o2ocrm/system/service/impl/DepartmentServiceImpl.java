@@ -7,6 +7,7 @@ import com.o2ocrm.basic.query.PageList;
 import com.o2ocrm.system.domain.Department;
 import com.o2ocrm.system.mapper.DepartmentMapper;
 import com.o2ocrm.system.service.IDepartmentService;
+import com.o2ocrm.system.utils.EditParentFieldUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -66,7 +67,30 @@ public class DepartmentServiceImpl implements IDepartmentService {
      */
     @Override
     public void deleteDeptInfoById(Long id) {
-        deptMapper.deleteByPrimaryKey(id);
+        // 如果时父级部门，那么删除的同时子级部门也要同时进行删除，避免产生脏数据
+        // 获取所有部门数据，只要dir_path属性中有此id一律删除掉
+        List<Department> deptList = deptMapper.selectAll();
+        for (Department dept : deptList) {
+            if (dept.getDirPath().contains(String.valueOf(id)))
+                deptMapper.deleteByPrimaryKey(dept.getId());
+        }
+    }
+
+    /**
+     * 根据id数组进行批量删除
+     * @param baseQuery id数组
+     */
+    @Override
+    public void batchDeleteDeptInfoByIds(BaseQuery baseQuery) {
+        // 如果时父级部门，那么删除的同时子级部门也要同时进行删除，避免产生脏数据
+        // 获取所有部门数据，只要dir_path属性中有此id一律删除掉
+        List<Department> deptList = deptMapper.selectAll();
+        for (Long id : baseQuery.getIds()) {
+            for (Department dept : deptList) {
+                if (dept.getDirPath().contains(String.valueOf(id)))
+                    deptMapper.deleteByPrimaryKey(dept.getId());
+            }
+        }
     }
 
     /**
@@ -76,29 +100,11 @@ public class DepartmentServiceImpl implements IDepartmentService {
      */
     @Override
     public void insertAndModify(Department dept) {
-        // 判断department中id是否为空值
         if (dept.getId() == null) {
-            // 为空：新增操作
-            // 正常执行新增操作
             deptMapper.insertSelective(dept);
-            // 获取此数据的父级id数组
-            Long[] parentIds = dept.getParentIds();
-            // 创建字符串操作对象StringBuffer
-            StringBuffer sb = new StringBuffer();
-            // 判空
-            if (parentIds != null && parentIds.length > 0) {
-                for (Long ids : parentIds) {
-                    sb.append("/" + ids);
-                }
-                sb.append("/" + dept.getId());
-            }
-            dept.setDirPath(sb.toString());
-            dept.setParentId(parentIds[parentIds.length - 1]);
-            deptMapper.updateByPrimaryKeySelective(dept);
-        } else {
-            // 不为空：修改操作
-            deptMapper.updateByPrimaryKeySelective(dept);
         }
+        EditParentFieldUtil.updateParentAndPath(dept);
+        deptMapper.updateByPrimaryKeySelective(dept);
     }
 
     /**

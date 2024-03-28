@@ -35,6 +35,12 @@ public interface IDepartmentService {
     void deleteDeptInfoById(Long id);
 
     /**
+     * 根据id数组进行批量删除
+     * @param baseQuery id数组
+     */
+    void batchDeleteDeptInfoByIds(BaseQuery baseQuery);
+
+    /**
      * 新增部门和修改部门信息
      * 通过参数department的id值来判断是新增还是修改，如果id为空，则为新增，如果id有值，则是修改
      * @param department
