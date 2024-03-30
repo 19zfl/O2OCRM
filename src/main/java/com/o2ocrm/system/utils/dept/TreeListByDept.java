@@ -1,4 +1,4 @@
-package com.o2ocrm.system.utils;
+package com.o2ocrm.system.utils.dept;
 
 import com.o2ocrm.system.domain.Department;
 
