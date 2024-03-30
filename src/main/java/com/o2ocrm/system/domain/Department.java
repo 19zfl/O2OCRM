@@ -1,6 +1,7 @@
 package com.o2ocrm.system.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.o2ocrm.basic.entity.BaseDomain;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,12 +25,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "t_department")
 @ApiModel(value = "Department", description = "部门实体类")
-public class Department {
-
-    /** 部门id */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Department extends BaseDomain {
 
     /** 部门编号 */
 //    @Size(min = 3, max = 8, message = "长度在3-8个字母或汉字！")
