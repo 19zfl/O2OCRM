@@ -1,11 +1,11 @@
 package com.o2ocrm.system.domain;
 
+import com.o2ocrm.basic.entity.BaseDomain;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -20,11 +20,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Table(name = "t_employee")
 @ApiModel(value = "Employee", description = "员工实体类")
-public class Employee {
-
-    /** 员工id */
-    @Id
-    private Long id;
+public class Employee extends BaseDomain {
 
     /** 员工名字 */
     private String username;
