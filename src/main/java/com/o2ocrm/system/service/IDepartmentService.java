@@ -1,8 +1,8 @@
 package com.o2ocrm.system.service;
 
-import com.o2ocrm.basic.query.BaseQuery;
 import com.o2ocrm.basic.query.PageList;
 import com.o2ocrm.system.domain.Department;
+import com.o2ocrm.system.query.DeptQuery;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public interface IDepartmentService {
      * @param baseQuery 分页参数：页码，每页条数
      * @return 所有部门分页信息集合
      */
-    PageList<Department> getAllDeptInfoByPageList(BaseQuery baseQuery);
+    PageList<Department> getAllDeptInfoByPageList(DeptQuery query);
 
     /**
      * 根据部门id删除该部门
@@ -38,7 +38,7 @@ public interface IDepartmentService {
      * 根据id数组进行批量删除
      * @param baseQuery id数组
      */
-    void batchDeleteDeptInfoByIds(BaseQuery baseQuery);
+    void batchDeleteDeptInfoByIds(DeptQuery query);
 
     /**
      * 新增部门和修改部门信息
