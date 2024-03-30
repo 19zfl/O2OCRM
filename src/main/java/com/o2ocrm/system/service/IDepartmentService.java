@@ -23,7 +23,7 @@ public interface IDepartmentService {
 
     /**
      * 获取所有部门分页数据
-     * @param baseQuery 分页参数：页码，每页条数
+     * @param query 分页参数：页码，每页条数
      * @return 所有部门分页信息集合
      */
     PageList<Department> getAllDeptInfoByPageList(DeptQuery query);
@@ -36,7 +36,7 @@ public interface IDepartmentService {
 
     /**
      * 根据id数组进行批量删除
-     * @param baseQuery id数组
+     * @param query id数组
      */
     void batchDeleteDeptInfoByIds(DeptQuery query);
 
