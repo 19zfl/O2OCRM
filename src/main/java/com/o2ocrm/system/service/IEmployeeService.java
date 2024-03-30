@@ -1,8 +1,8 @@
 package com.o2ocrm.system.service;
 
-import com.o2ocrm.basic.query.BaseQuery;
 import com.o2ocrm.basic.query.PageList;
 import com.o2ocrm.system.domain.Employee;
+import com.o2ocrm.system.query.EmpQuery;
 
 import java.util.List;
 
@@ -23,10 +23,10 @@ public interface IEmployeeService {
 
     /**
      * 获取所有员工分页数据
-     * @param baseQuery 分页参数：页码，每页条数
+     * @param query 分页参数：页码，每页条数
      * @return 所有员工分页信息集合
      */
-    PageList<Employee> getAllEmpInfoByPageList(BaseQuery baseQuery);
+    PageList<Employee> getAllEmpInfoByPageList(EmpQuery query);
 
     /**
      * 根据员工id删除该员工
@@ -46,5 +46,11 @@ public interface IEmployeeService {
      * @return 返回管理着部门的员工数据
      */
     List<Employee> getHasDeptManagerList();
+
+    /**
+     * 获取所有部门经理数据
+     * @return
+     */
+    List<Employee> getEmpHasDeptListBySql();
 
 }
