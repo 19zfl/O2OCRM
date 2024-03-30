@@ -14,6 +14,8 @@ nvm、Nodejs、Vue.js、Element-UI
 
 部门管理模块、员工管理模块
 
+目前在develop分支上进行feature的完善
+
 #### 接口文档地址：
 
 http://localhost:8080/swagger-ui.html
