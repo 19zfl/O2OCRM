@@ -217,10 +217,11 @@
                     //size 就是每页条数
                     pageSize: this.pageSize,
                     //这个是高级查询的条件
-                    keyword: this.filters.name, //部门名称
-                    managerId: this.filters.managerId,
-                    parentId: this.filters.parentId
+                    name: this.filters.name, //部门名称
+                    managerId: this.filters.managerId, //部门经理id
+                    parentId: this.filters.parentId, //部门上级部门id
                 };
+                console.log(para)
                 this.listLoading = true;
                 //NProgress.start();
                 this.$http.post("/system/dept/list", para).then((res) => {
