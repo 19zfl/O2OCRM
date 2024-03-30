@@ -1,8 +1,8 @@
 package com.o2ocrm.system.controller;
 
-import com.o2ocrm.basic.query.BaseQuery;
 import com.o2ocrm.basic.vo.AjaxResult;
 import com.o2ocrm.system.domain.Employee;
+import com.o2ocrm.system.query.EmpQuery;
 import com.o2ocrm.system.service.IEmployeeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,7 +45,7 @@ public class EmployeeController {
      */
     @PostMapping("/list")
     @ApiOperation(value = "获取员工列表", notes = "获取员工列表")
-    public AjaxResult getAllEmpInfoByPageList(@ApiParam(value = "分页参数", required = true) @RequestBody BaseQuery query) {
+    public AjaxResult getAllEmpInfoByPageList(@ApiParam(value = "分页参数", required = true) @RequestBody EmpQuery query) {
         return AjaxResult.success(empService.getAllEmpInfoByPageList(query));
     }
 

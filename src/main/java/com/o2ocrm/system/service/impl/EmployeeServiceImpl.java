@@ -2,12 +2,12 @@ package com.o2ocrm.system.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.o2ocrm.basic.query.BaseQuery;
 import com.o2ocrm.basic.query.PageList;
 import com.o2ocrm.system.domain.Department;
 import com.o2ocrm.system.domain.Employee;
 import com.o2ocrm.system.mapper.DepartmentMapper;
 import com.o2ocrm.system.mapper.EmployeeMapper;
+import com.o2ocrm.system.query.EmpQuery;
 import com.o2ocrm.system.service.IEmployeeService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -41,13 +41,13 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     /**
      * 获取所有员工分页数据
-     * @param baseQuery 分页参数：页码，每页条数
+     * @param query 分页参数：页码，每页条数
      * @return 所有员工分页信息集合
      */
     @Override
-    public PageList<Employee> getAllEmpInfoByPageList(BaseQuery baseQuery) {
+    public PageList<Employee> getAllEmpInfoByPageList(EmpQuery query) {
         // 设置分页参数
-        PageHelper.startPage(baseQuery.getPageNum(), baseQuery.getPageSize());
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
         // 执行查询操作
         List<Employee> empList = empMapper.selectAll();
         // 封装分页数据
@@ -111,5 +111,14 @@ public class EmployeeServiceImpl implements IEmployeeService {
             empList.add(empMapper.selectByPrimaryKey(id));
         }
         return empList;
+    }
+
+    /**
+     * 获取所有部门经理数据
+     * @return 返回数据集合
+     */
+    @Override
+    public List<Employee> getEmpHasDeptListBySql() {
+        return empMapper.getEmpHasDeptListBySql();
     }
 }

@@ -1,6 +1,7 @@
 package com.o2ocrm.system.mapper;
 
 import com.o2ocrm.system.domain.Department;
+import com.o2ocrm.system.query.DeptQuery;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -22,6 +23,12 @@ public interface DepartmentMapper extends Mapper<Department> {
      * 连表查询获取部门数据
      * @return 所有部门分页信息集合
      */
-    List<Department> getAllDeptListBySql();
+    List<Department> getAllDeptListBySql(DeptQuery query);
+
+    /**
+     * 连表查询父级部门数据
+     * @return 父级部门数据集合
+     */
+    List<Department> getParentDeptListBySql();
 
 }

@@ -1,8 +1,8 @@
 package com.o2ocrm.system.controller;
 
-import com.o2ocrm.basic.query.BaseQuery;
 import com.o2ocrm.basic.vo.AjaxResult;
 import com.o2ocrm.system.domain.Department;
+import com.o2ocrm.system.query.DeptQuery;
 import com.o2ocrm.system.service.IDepartmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,13 +40,13 @@ public class DepartmentController {
 
     /**
      * 获取部门列表
-     * @param baseQuery 分页参数
+     * @param query 分页参数
      * @return 部门列表
      */
     @PostMapping("/list")
     @ApiOperation(value = "获取部门列表", notes = "获取部门列表")
-    public AjaxResult getAllDeptInfoByPageList(@ApiParam(value = "分页参数", required = true) @RequestBody BaseQuery baseQuery) {
-        return AjaxResult.success(deptService.getAllDeptInfoByPageList(baseQuery));
+    public AjaxResult getAllDeptInfoByPageList(@ApiParam(value = "分页参数", required = true) @RequestBody DeptQuery query) {
+        return AjaxResult.success(deptService.getAllDeptInfoByPageList(query));
     }
 
     /**
@@ -73,7 +73,7 @@ public class DepartmentController {
      */
     @PostMapping("/batch")
     @ApiOperation(value = "批量删除部门", notes = "批量删除部门")
-    public AjaxResult batchDeleteDeptInfoByIds(@RequestBody BaseQuery query) {
+    public AjaxResult batchDeleteDeptInfoByIds(@RequestBody DeptQuery query) {
         try {
             deptService.batchDeleteDeptInfoByIds(query);
             return AjaxResult.success();
@@ -108,8 +108,7 @@ public class DepartmentController {
     @ApiOperation(value = "部门无限极树列表展示", notes = "新增模态框中部门无限极树列表展示")
     public AjaxResult getTreeDeptList() {
         try {
-            List<Department> treeDeptList = deptService.getTreeDeptList();
-            return AjaxResult.success(treeDeptList);
+            return AjaxResult.success(deptService.getTreeDeptList());
         } catch (Exception e) {
             return AjaxResult.error("获取树失败！");
         }
@@ -123,8 +122,7 @@ public class DepartmentController {
     @ApiOperation(value = "首页父级部门下拉列表", notes = "部门模块首页父级部门下拉列表展示")
     public AjaxResult getParentDeptList() {
         try {
-            List<Department> parentDeptList = deptService.getParentDeptList();
-            return AjaxResult.success(parentDeptList);
+            return AjaxResult.success(deptService.getParentDeptList());
         } catch (Exception e) {
             return AjaxResult.error("父级部门获取失败！");
         }

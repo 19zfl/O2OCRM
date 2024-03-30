@@ -1,13 +1,17 @@
 package com.o2ocrm.system.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.o2ocrm.basic.query.BaseQuery;
 import com.o2ocrm.basic.query.PageList;
+import com.o2ocrm.basic.utils.RedisService;
 import com.o2ocrm.system.domain.Department;
 import com.o2ocrm.system.mapper.DepartmentMapper;
+import com.o2ocrm.system.query.DeptQuery;
 import com.o2ocrm.system.service.IDepartmentService;
 import com.o2ocrm.system.utils.EditParentFieldUtil;
+import com.o2ocrm.system.utils.TreeListByDept;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -34,6 +38,12 @@ public class DepartmentServiceImpl implements IDepartmentService {
     private DepartmentMapper deptMapper;
 
     /**
+     * 注入操作Redis缓存Bean依赖
+     */
+    @Resource
+    private RedisService redisService;
+
+    /**
      * 获取所有部门信息
      * @return 所有部门信息集合List
      */
@@ -44,15 +54,15 @@ public class DepartmentServiceImpl implements IDepartmentService {
 
     /**
      * 获取所有部门分页数据
-     * @param baseQuery 分页参数：页码，每页条数
+     * @param query 分页参数：页码，每页条数
      * @return 所有部门分页信息集合
      */
     @Override
-    public PageList<Department> getAllDeptInfoByPageList(BaseQuery baseQuery) {
+    public PageList<Department> getAllDeptInfoByPageList(DeptQuery query) {
         // 设置分页参数
-        PageHelper.startPage(baseQuery.getPageNum(), baseQuery.getPageSize());
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
         // 执行查询操作
-        List<Department> deptList = deptMapper.getAllDeptListBySql();
+        List<Department> deptList = deptMapper.getAllDeptListBySql(query);
         // 封装分页数据
         PageInfo<Department> deptListByPageInfo = new PageInfo<>(deptList);
         // 将分页数据封装进PageList中
@@ -74,23 +84,27 @@ public class DepartmentServiceImpl implements IDepartmentService {
             if (dept.getDirPath().contains(String.valueOf(id)))
                 deptMapper.deleteByPrimaryKey(dept.getId());
         }
+        // 重建缓存
+        redisService.deleteRedisByKey("treeDept");
     }
 
     /**
      * 根据id数组进行批量删除
-     * @param baseQuery id数组
+     * @param query id数组
      */
     @Override
-    public void batchDeleteDeptInfoByIds(BaseQuery baseQuery) {
+    public void batchDeleteDeptInfoByIds(DeptQuery query) {
         // 如果时父级部门，那么删除的同时子级部门也要同时进行删除，避免产生脏数据
         // 获取所有部门数据，只要dir_path属性中有此id一律删除掉
         List<Department> deptList = deptMapper.selectAll();
-        for (Long id : baseQuery.getIds()) {
+        for (Long id : query.getIds()) {
             for (Department dept : deptList) {
                 if (dept.getDirPath().contains(String.valueOf(id)))
                     deptMapper.deleteByPrimaryKey(dept.getId());
             }
         }
+        // 重建缓存
+        redisService.deleteRedisByKey("treeDept");
     }
 
     /**
@@ -105,6 +119,8 @@ public class DepartmentServiceImpl implements IDepartmentService {
         }
         EditParentFieldUtil.updateParentAndPath(dept);
         deptMapper.updateByPrimaryKeySelective(dept);
+        // 重建缓存
+        redisService.deleteRedisByKey("treeDept");
     }
 
     /**
@@ -113,30 +129,24 @@ public class DepartmentServiceImpl implements IDepartmentService {
      */
     @Override
     public List<Department> getTreeDeptList() {
-        // 获取所有部门数据
-        List<Department> deptList = deptMapper.selectAll();
-        // 创建一个空集合存放数据最后返回给前端
-        List<Department> treeDeptList = new ArrayList<>();
-        // 创建一个集合存放遍历数据
-        Map<Long, Department> map = new HashMap<>();
-        for (Department dept : deptList) {
-            map.put(dept.getId(), dept);
+        // 默认树形数据在redis中的key为deptTree
+        // 1.从redis中获取key为deptTree的数据
+        String data = redisService.getKeyObjectValue("deptTree", String.class);
+        // 2.判断是否有值
+        if (StrUtil.isEmpty(data)) {
+            // 没有
+            // 获取树形数据
+            List<Department> deptList = deptMapper.selectAll();
+            List<Department> deptTreeList = TreeListByDept.getDeptTreeList(deptList);
+            // 存入redis缓存中
+            redisService.setStringKeyAndValue("deptTree", deptTreeList);
+            return deptTreeList;
+        } else {
+            // 有
+            // 从redis中取出数据
+            List<Department> deptTreeLists = (List<Department>) JSONObject.parse(data);
+            return deptTreeLists;
         }
-        // 遍历部门数据
-        for (Department dept : deptList) {
-            // 判断是否有父级id
-            if (dept.getParentId() == null) {
-                // 没有，说明是顶级
-                treeDeptList.add(dept);
-            } else {
-                // 有，将自己存入父级对象的子集中
-                // 通过子级部门的parentId拿到父级部门对象
-                Department parentDept = map.get(dept.getParentId());
-                // 将自己存入父级对象中
-                parentDept.getChildren().add(dept);
-            }
-        }
-        return treeDeptList;
     }
 
     /**
@@ -145,16 +155,6 @@ public class DepartmentServiceImpl implements IDepartmentService {
      */
     @Override
     public List<Department> getParentDeptList() {
-        // 获取所有部门数据
-        List<Department> deptList = deptMapper.selectAll();
-        // 创建空集合存放父级部门数据
-        List<Department> parentList = new ArrayList<>();
-        // 遍历取出父级部门
-        for (Department dept : deptList) {
-            if (dept.getParentId() == null && StringUtils.isEmpty(dept.getParentId())) {
-                parentList.add(dept);
-            }
-        }
-        return parentList;
+        return deptMapper.getParentDeptListBySql();
     }
 }
