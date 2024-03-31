@@ -53,11 +53,11 @@
                   style="width: 100%;">
             <el-table-column type="selection" width="55">
             </el-table-column>
-            <el-table-column type="index" width="60" label="编号">
+            <el-table-column type="index" label="编号">
             </el-table-column>
-            <el-table-column prop="name" label="部门名称" width="120" sortable>
+            <el-table-column prop="name" label="部门名称" sortable>
             </el-table-column>
-            <el-table-column prop="state" label="状态" width="100" :formatter="formatSex" sortable>
+            <el-table-column prop="state" label="状态" :formatter="formatSex" sortable>
                 <template slot-scope="scope">
                     <el-button type="text" size="small"
                                :type="scope.row.state ==0?'danger':'primary'">
@@ -65,11 +65,11 @@
                     </el-button>
                 </template>
             </el-table-column>
-            <el-table-column prop="sn" label="部门编号" width="100" sortable>
+            <el-table-column prop="sn" label="部门编号" sortable>
             </el-table-column>
-            <el-table-column prop="managerName" label="部门经理" width="100" sortable>
+            <el-table-column prop="managerName" label="部门经理" sortable>
             </el-table-column>
-            <el-table-column prop="parentName" label="上级部门" width="100" sortable>
+            <el-table-column prop="parentName" label="上级部门" sortable>
             </el-table-column>
             <el-table-column label="操作" width="150">
                 <template slot-scope="scope">
@@ -89,12 +89,13 @@
                            @size-change="handleSizeChange"
                            :page-size="size"
                            :total="total"
-                           style="float:right;">
+                           style="float:right"
+                           background>
             </el-pagination>
         </el-col>
 
         <!--新增界面-->
-        <el-dialog title="操作" :visible.sync="addFormVisible" :close-on-click-modal="false">
+        <el-dialog title="操作" :visible.sync="addFormVisible" :close-on-click-modal="true">
             <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
                 <el-form-item label="部门名称" prop="name">
                     <el-input v-model="addForm.name" auto-complete="off"></el-input>
