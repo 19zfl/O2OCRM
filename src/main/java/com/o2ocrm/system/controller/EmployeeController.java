@@ -67,6 +67,22 @@ public class EmployeeController {
     }
 
     /**
+     * 批量删除员工
+     * @param query 员工id集合
+     * @return 返回信息
+     */
+    @PostMapping("/del/batch/")
+    @ApiOperation(value = "批量删除员工", notes = "批量删除员工")
+    public AjaxResult batchDeleteEmpInfoByIds(@RequestBody EmpQuery query) {
+        try {
+            empService.batchDeleteDeptInfoByIds(query);
+            return AjaxResult.success();
+        } catch (Exception e) {
+            return AjaxResult.error("批量操作失败！");
+        }
+    }
+
+    /**
      * 员工新增和修改
      * @param emp 员工信息
      * @return 返回消息
@@ -83,6 +99,10 @@ public class EmployeeController {
         }
     }
 
+    /**
+     * 获取管理部门的经理列表
+     * @return
+     */
     @GetMapping("/has/dept")
     @ApiOperation(value = "获取管理部门的经理列表", notes = "获取管理部门的经理列表")
     public AjaxResult getHasDeptManagerList() {

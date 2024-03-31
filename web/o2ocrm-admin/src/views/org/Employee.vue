@@ -1,6 +1,20 @@
 <template>
   <section>
+    <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+      <el-form :inline="true" :model="filters">
+        <el-form-item>
+          <el-input placeholder="员工名称" v-model="filters.name">
+            <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="handleAdd" type="success" plain>新增</el-button>
+          <el-button @click="getAllEmpInfoListByPageList" type="primary" plain>刷新页面</el-button>
+        </el-form-item>
+      </el-form>
+    </el-col>
     <el-table
+        v-loading="loading"
         :data="tableData"
         style="width: 100%"
         :row-class-name="tableRowClassName"
@@ -83,7 +97,8 @@
           background
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :page-sizes="[7, 10, 20, 50]"
+          :page-size="size"
+          :page-sizes="[5, 10, 20, 50]"
           layout="total, sizes, prev, pager, next, jumper"
           :total=total
           style="float: right">
@@ -121,7 +136,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editEmpInfo()">确 定</el-button>
+        <el-button type="primary" @click="editEmpInfo">确 定</el-button>
       </div>
     </el-dialog>
   </section>
@@ -132,13 +147,10 @@ export default {
   data() {
     return {
       tableData: [],  // 表格数据集合
+      loading: true,
       total: 0,   // 总条数
-      pageSize: 0,  // 页码
-      pageNum: 0,   // 每页条数
-      param: {    // 分页参数集合
-        pageNum: 0,
-        pageSize: 0,
-      },
+      pageSize: 10,  // 页码
+      pageNum: 1,   // 每页条数
       selectedIds: [], // 批量删除的ids组数
       gridData: [], // 查看某行数据的集合
       dialogVisible: false, // 新增编辑的dialog模态框弹出开关
@@ -151,6 +163,9 @@ export default {
         {value: 0, label: '账号异常'},
         {value: 5, label: '禁用'}
       ],
+      filters: {  // 高级查询参数
+        name: ''
+      },
     }
   },
   methods: {
@@ -185,13 +200,21 @@ export default {
       this.dialogVisible = true
       this.addData = row
     },
+    handleAdd() {
+      this.dialogVisible = true
+      this.addData = Object.assign({}, {})
+    },
     /* 获取员工所有数据 */
     getAllEmpInfoListByPageList() {
-      this.param.pageNum = this.pageNum
-      this.param.pageSize = this.pageSize
-      this.$http.post("/system/emp/list", this.param).then(res => {
+      this.loading = true
+      let param = {
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+      }
+      this.$http.post("/system/emp/list", param).then(res => {
         this.tableData = res.data.data.list
         this.total = res.data.data.total
+        this.loading = false
       })
     },
     /* 删除 */
@@ -218,13 +241,44 @@ export default {
     },
     /* 批量删除 */
     batchRemove() {
-      let ids = this.selectedIds
+      let param = {ids:[]}
+      for (let i = 0; i <= this.selectedIds.length -1; i++) {
+        param.ids.push(this.selectedIds[i].id)
+      }
+      /* 确认进行操作，避免误点击 */
+      this.$confirm('此操作将永久删除这多条数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http.post("/system/emp/del/batch/", param).then(res => {
+          this.getAllEmpInfoListByPageList()
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除！'
+        });
+      });
     },
     /* 新增和编辑 */
     editEmpInfo() {
       this.$http.post("/system/emp/edit", this.addData).then(res => {
         this.dialogVisible = false
         this.getAllEmpInfoListByPageList()
+        this.$message({
+          type: 'success',
+          message: '操作成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消操作！'
+        });
       })
     },
   },

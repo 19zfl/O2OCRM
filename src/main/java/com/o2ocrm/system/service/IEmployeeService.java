@@ -35,6 +35,12 @@ public interface IEmployeeService {
     void deleteEmpInfoById(Long id);
 
     /**
+     * 根据id集合批量删除员工信息
+     * @param query
+     */
+    void batchDeleteDeptInfoByIds(EmpQuery query);
+
+    /**
      * 新增员工和修改员工信息
      * 通过参数employee的id值来判断是新增还是修改，如果id为空，则为新增，如果id有值，则是修改
      * @param employee

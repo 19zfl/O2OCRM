@@ -68,6 +68,17 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     /**
+     * 根据员工id集合删除员工
+     * @param query
+     */
+    @Override
+    public void batchDeleteDeptInfoByIds(EmpQuery query) {
+        for (Long id : query.getIds()) {
+            empMapper.deleteByPrimaryKey(id);
+        }
+    }
+
+    /**
      * 新增员工和修改员工信息
      * 通过参数employee的id值来判断是新增还是修改，如果id为空，则为新增，如果id有值，则是修改
      * @param employee
