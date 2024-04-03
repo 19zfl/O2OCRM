@@ -4,7 +4,7 @@
       <el-form :inline="true" :model="filters">
         <el-form-item>
           <el-input placeholder="员工名称" v-model="filters.name">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+            <el-button slot="append" icon="el-icon-search" v-on:click="getAllEmpInfoListByPageList"></el-button>
           </el-input>
         </el-form-item>
         <el-form-item>
@@ -210,6 +210,7 @@ export default {
       let param = {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
+        name: this.filters.name
       }
       this.$http.post("/system/emp/list", param).then(res => {
         this.tableData = res.data.data.list

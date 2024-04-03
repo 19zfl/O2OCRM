@@ -1,6 +1,7 @@
 package com.o2ocrm.system.mapper;
 
 import com.o2ocrm.system.domain.Employee;
+import com.o2ocrm.system.query.EmpQuery;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -25,5 +26,12 @@ public interface EmployeeMapper extends Mapper<Employee> {
      * TODO 目前使用的遍历方式获取而非sql直接获取，遍历方式造成了查询了数据库两次
      */
     List<Employee> getEmpHasDeptListBySql();
+
+    /**
+     * 高级查询所有员工数据
+     * @param query 查询参数
+     * @return 员工数据集合
+     */
+    List<Employee> getEmpListBySQL(EmpQuery query);
 
 }

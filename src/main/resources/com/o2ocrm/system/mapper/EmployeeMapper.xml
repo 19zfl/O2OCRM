@@ -7,4 +7,14 @@
         select distinct te.* FROM t_employee te LEFT JOIN t_department td ON te.id = td.manager_id
     </select>
 
+    <!-- 高级查询所有员工数据 -->
+    <select id="getEmpListBySQL" resultType="com.o2ocrm.system.domain.Employee">
+        select * from t_employee as te
+        <where>
+            <if test="name != null and name != ''">
+                and te.username like concat('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+
 </mapper>

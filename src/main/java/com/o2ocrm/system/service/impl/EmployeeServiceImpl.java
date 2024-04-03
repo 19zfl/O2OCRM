@@ -49,7 +49,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
         // 设置分页参数
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         // 执行查询操作
-        List<Employee> empList = empMapper.selectAll();
+        List<Employee> empList = empMapper.getEmpListBySQL(query);
         // 封装分页数据
         PageInfo<Employee> empListByPageInfo = new PageInfo<>(empList);
         // 将分页数据封装进PageList中
