@@ -10,7 +10,8 @@
     <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>
     <el-form-item style="width:100%;">
       <el-button type="primary" style="width:47%;" @click.native.prevent="handleSubmit2" :loading="logining">登录</el-button>
-      <el-button type="success" style="width:47%;" @click.native.prevent="shopZhuce" :loading="logining">店铺入驻</el-button>
+      <!--   @click.native.prevent : 事件冒泡，一个按钮被多个容器包围时，防止这个标签事件被其他容器触发   -->
+      <el-button type="success" style="width:47%;" @click.native.prevent="shopSingUp" :loading="logining">店铺入驻</el-button>
       <!--<el-button @click.native.prevent="handleReset2">重置</el-button>-->
     </el-form-item>
   </el-form>
@@ -44,9 +45,9 @@
       handleReset2() {
         this.$refs.ruleForm2.resetFields();
       },
-      shopZhuce(){
+      shopSingUp(){
         //跳转到指定的路由url地址
-        this.$router.push({ path: '/shopZhuCe' });
+        this.$router.push({ path: '/shop' });
       },
       handleSubmit2(ev) {
         //跳转页面
