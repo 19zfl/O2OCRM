@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @ClassName:Shop
@@ -47,5 +48,9 @@ public class Shop extends BaseDomain {
     /** 店铺管理员 */
     @Column(name = "admin_id")
     private String adminId;
+
+    /** 店铺管理员信息 */
+    @Transient
+    private Employee admin;
 
 }

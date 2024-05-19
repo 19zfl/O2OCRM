@@ -1,10 +1,12 @@
 package com.o2ocrm.system.controller;
 
 import com.o2ocrm.basic.vo.AjaxResult;
+import com.o2ocrm.system.domain.Shop;
 import com.o2ocrm.system.service.IShopService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +27,7 @@ public class ShopController {
     private IShopService shopService;
 
     @PostMapping("/register")
-    public AjaxResult shopRegister() {
+    public AjaxResult shopRegister(@RequestBody Shop shop) {
         return null;
     }
 
