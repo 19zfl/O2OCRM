@@ -76,8 +76,8 @@
         <el-input type="password" v-model="shop.admin.password" auto-complete="off"
                   placeholder="请输入密码！"></el-input>
       </el-form-item>
-      <el-form-item prop="admin.comfirmPassword" label="确认密码">
-        <el-input type="password" v-model="shop.admin.comfirmPassword" auto-complete="off"
+      <el-form-item prop="admin.confirmPassword" label="确认密码">
+        <el-input type="password" v-model="shop.admin.confirmPassword" auto-complete="off"
                   placeholder="请输入确认密码！"></el-input>
       </el-form-item>
       <div style="text-align: center">
@@ -130,16 +130,16 @@ export default {
       //shop:shop 为了做数据表单校验不要嵌套对象
       shop: {
         admin: {
-          username: "",
-          phone: "",
-          email: "",
-          password: "",
-          comfirmPassword: ""
+          username: "user01",
+          phone: "13955552222",
+          email: "123@qq.com",
+          password: "123456",
+          confirmPassword: "123456"
         },
-        name: '',
-        address: '',
-        logo: '',
-        tel: '',
+        name: '牛马宠物店',
+        address: '长城科技园',
+        logo: '123',
+        tel: '13922221111',
       },
       formRules: {
         name: [
@@ -166,7 +166,7 @@ export default {
         'admin.password': [
           {required: true, message: '请输入密码!', trigger: 'blur'}
         ],
-        'admin.comfirmPassword': [
+        'admin.confirmPassword': [
           {required: true, validator: validatePass2, trigger: 'blur'} //自定义校验规则
         ]
       }
@@ -222,7 +222,7 @@ export default {
             let para = Object.assign({}, this.shop); //shop 本身这个参数里面就有店铺和管理员信息
             // 为了后台好接收，封装一个对象放到里面
             //判断是否有id有就是修改,否则就是添加
-            this.$http.post("/shop/register", para).then((res) => {
+            this.$http.post("/system/shop/register", para).then((res) => {
               if (res.data.success) {
                 this.$message({
                   message: '操作成功!',
