@@ -5,14 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.o2ocrm.basic.query.PageList;
-import com.o2ocrm.basic.utils.RedisService;
+import com.o2ocrm.basic.utils.redis.RedisService;
 import com.o2ocrm.system.domain.Department;
 import com.o2ocrm.system.mapper.DepartmentMapper;
 import com.o2ocrm.system.query.DeptQuery;
 import com.o2ocrm.system.service.IDepartmentService;
 import com.o2ocrm.system.utils.dept.EditParentFieldUtil;
 import com.o2ocrm.system.utils.dept.TreeListByDept;
-import com.o2ocrm.system.utils.redis.RedisServiceCheck;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

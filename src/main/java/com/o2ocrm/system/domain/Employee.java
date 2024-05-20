@@ -1,5 +1,7 @@
 package com.o2ocrm.system.domain;
 
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.crypto.SecureUtil;
 import com.o2ocrm.basic.entity.BaseDomain;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
@@ -68,5 +70,12 @@ public class Employee extends BaseDomain {
     /** 确认密码 */
     @Transient
     private String confirmPassword;
+
+//    public void passWordInitializer() {
+//        String saltV = IdUtil.fastSimpleUUID();
+//        String encryptedPassword = SecureUtil.md5().setSalt(saltV.getBytes()).digestHex(this.getPassword());
+//        this.setSalt(saltV);
+//        this.setPassword(encryptedPassword);
+//    }
 
 }
