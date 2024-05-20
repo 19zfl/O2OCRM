@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -42,19 +43,27 @@ public class Employee extends BaseDomain {
     private Integer state;
 
     /** 员工所属部门id */
-    private Long department_id;
+    @Column(name = "department_id")
+    private Long departmentId;
 
     /** 员工登录信息id */
-    private Long logininfo_id;
+    @Column(name = "logininfo_id")
+    private Long logininfoId;
 
     /** 员工店铺id */
-    private Long shop_id;
+    @Column(name = "shop_id")
+    private Long shopId;
 
     /** 员工上级部门id */
-    private Long parent_id;
+    @Column(name = "parent_id")
+    private Long parentId;
 
     /** 员工经理id */
-    private Long manager_id;
+    @Column(name = "manager_id")
+    private Long managerId;
+
+    /** 密码盐值 */
+    private String salt;
 
     /** 确认密码 */
     @Transient
