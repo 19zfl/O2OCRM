@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.Date;
 
 /**
  * @ClassName:Shop
@@ -34,10 +35,10 @@ public class Shop extends BaseDomain {
     /** 店铺注册时间 */
     @Column(name = "register_time")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-    private String registerTime;
+    private Date registerTime = new Date();
 
     /** 店铺当前状态 */
-    private String state;
+    private Integer state;
 
     /** 店铺地址 */
     private String address;
@@ -47,7 +48,7 @@ public class Shop extends BaseDomain {
 
     /** 店铺管理员 */
     @Column(name = "admin_id")
-    private String adminId;
+    private Long adminId;
 
     /** 店铺管理员信息 */
     @Transient

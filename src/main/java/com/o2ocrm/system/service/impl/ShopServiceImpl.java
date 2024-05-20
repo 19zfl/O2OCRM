@@ -42,7 +42,7 @@ public class ShopServiceImpl implements IShopService {
             throw new RuntimeException("两次输入的密码不一致！");
         // 1.2 校验店铺是否已经注册过
         List<Shop> shopList = shopMapper.getShopListByTel(shop.getTel());
-        if (shopList.size() > 0 || shopList != null)
+        if (shopList.size() > 0 && shopList != null)
             throw new RuntimeException("店铺已经注册！");
         // 2. 密码加盐加密
         String saltV = IdUtil.fastSimpleUUID();     // 盐值
@@ -54,7 +54,7 @@ public class ShopServiceImpl implements IShopService {
         shopMapper.insertSelective(shop);
         shop.getAdmin().setShopId(shop.getId());
         empMapper.insertSelective(shop.getAdmin());
-        shop.setAdminId(String.valueOf(shop.getAdmin().getId()));
+        shop.setAdminId(shop.getAdmin().getId());
         shopMapper.updateByPrimaryKeySelective(shop);
     }
 
