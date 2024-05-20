@@ -3,6 +3,7 @@ package com.o2ocrm.system.service.impl;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
+import com.o2ocrm.basic.utils.register.SaltUtil;
 import com.o2ocrm.system.domain.Shop;
 import com.o2ocrm.system.mapper.EmployeeMapper;
 import com.o2ocrm.system.mapper.ShopMapper;
@@ -22,10 +23,11 @@ import java.util.List;
 @Service
 public class ShopServiceImpl implements IShopService {
 
-    /** 注入持久层依赖 */
+    /** 注入shop持久层依赖 */
     @Autowired
     private ShopMapper shopMapper;
 
+    /** 注入employee持久层依赖 */
     @Autowired
     private EmployeeMapper empMapper;
 
@@ -42,14 +44,15 @@ public class ShopServiceImpl implements IShopService {
             throw new RuntimeException("两次输入的密码不一致！");
         // 1.2 校验店铺是否已经注册过
         List<Shop> shopList = shopMapper.getShopListByTel(shop.getTel());
+        // if (!shopList.isEmpty())
         if (shopList.size() > 0 && shopList != null)
             throw new RuntimeException("店铺已经注册！");
         // 2. 密码加盐加密
         String saltV = IdUtil.fastSimpleUUID();     // 盐值
-        String encryptedPassword = SecureUtil.md5().setSalt(saltV.getBytes()).digestHex(shop.getAdmin().getPassword());
+        // String encryptedPassword = SecureUtil.md5().setSalt(saltV.getBytes()).digestHex(shop.getAdmin().getPassword());
         // 3. 将盐值和加密后的密码存入实体对象中
         shop.getAdmin().setSalt(saltV);
-        shop.getAdmin().setPassword(encryptedPassword);
+        shop.getAdmin().setPassword(SaltUtil.encrypt(saltV, shop.getAdmin().getPassword()));
         // 4. 数据新增
         shopMapper.insertSelective(shop);
         shop.getAdmin().setShopId(shop.getId());
