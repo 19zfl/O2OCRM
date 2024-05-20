@@ -1,4 +1,4 @@
-package com.o2ocrm.basic.utils;
+package com.o2ocrm.basic.utils.redis;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
