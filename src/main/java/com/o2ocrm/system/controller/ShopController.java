@@ -28,7 +28,13 @@ public class ShopController {
 
     @PostMapping("/register")
     public AjaxResult shopRegister(@RequestBody Shop shop) {
-        return null;
+        try {
+            shopService.shopRegister(shop);
+            return AjaxResult.success();
+        } catch (Exception e) {
+            return AjaxResult.error("店铺失败，请稍后！");
+        }
+
     }
 
 }
