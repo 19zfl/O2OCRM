@@ -4,6 +4,7 @@ import com.o2ocrm.basic.vo.AjaxResult;
 import com.o2ocrm.system.domain.Shop;
 import com.o2ocrm.system.service.IShopService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,12 +28,13 @@ public class ShopController {
     private IShopService shopService;
 
     @PostMapping("/register")
+    @ApiOperation(value = "店铺入驻", notes = "店铺注册")
     public AjaxResult shopRegister(@RequestBody Shop shop) {
         try {
             shopService.shopRegister(shop);
             return AjaxResult.success();
         } catch (Exception e) {
-            return AjaxResult.error("店铺失败，请稍后！");
+            return AjaxResult.error("店铺注册失败，请稍后！");
         }
 
     }
