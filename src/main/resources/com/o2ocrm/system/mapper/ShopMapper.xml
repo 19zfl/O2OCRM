@@ -5,4 +5,7 @@
     <select id="getShopListByTel" resultType="com.o2ocrm.system.domain.Shop">
         select * from t_shop where tel = #{tel}
     </select>
+    <select id="getAllShopListBySql" resultType="com.o2ocrm.system.domain.Shop">
+
+    </select>
 </mapper>

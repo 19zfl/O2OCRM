@@ -61,4 +61,13 @@ public class ShopServiceImpl implements IShopService {
         shopMapper.updateByPrimaryKeySelective(shop);
     }
 
+    /**
+     * 获取所有店铺信息
+     * @return 所有店铺信息集合List
+     */
+    @Override
+    public List<Shop> getAllShopInfo() {
+        return shopMapper.selectAll();
+    }
+
 }

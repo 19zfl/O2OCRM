@@ -6,10 +6,7 @@ import com.o2ocrm.system.service.IShopService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @ClassName:ShopController
@@ -27,6 +24,11 @@ public class ShopController {
     @Autowired
     private IShopService shopService;
 
+    /**
+     * 店铺注册
+     * @param shop
+     * @return
+     */
     @PostMapping("/register")
     @ApiOperation(value = "店铺入驻", notes = "店铺注册")
     public AjaxResult shopRegister(@RequestBody Shop shop) {
@@ -37,6 +39,16 @@ public class ShopController {
             return AjaxResult.error("店铺注册失败，请稍后！");
         }
 
+    }
+
+    /**
+     * 获取员工信息
+     * @return 员工信息数据
+     */
+    @GetMapping("/all")
+    @ApiOperation(value = "获取店铺信息", notes = "获取店铺信息")
+    public AjaxResult getAllShopInfo() {
+        return AjaxResult.success(shopService.getAllShopInfo());
     }
 
 }

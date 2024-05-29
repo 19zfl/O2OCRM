@@ -47,7 +47,7 @@
       },
       shopSingUp(){
         //跳转到指定的路由url地址
-        this.$router.push({ path: '/shop' });
+        this.$router.push({ path: '/shopSign' });
       },
       handleSubmit2(ev) {
         //跳转页面

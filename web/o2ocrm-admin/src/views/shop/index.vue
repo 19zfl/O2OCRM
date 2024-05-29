@@ -37,28 +37,6 @@
                   placeholder="请输入地址！"></el-input>
         <el-button size="small" type="primary" @click="selectAdrress">选择</el-button>
       </el-form-item>
-      <el-form-item prop="logo" label="店铺Logo">
-        <!--
-            class: 设置样式
-            action: 图片上传的后端控制层地址(控制层暴露的访问路径)
-            on-preview: 点击上传的图片事件
-            on-remove: 删除图片的事件
-            on-success: 文件上传成功的事件(自动执行)
-            file-list: 存储上传的文件列表(当编辑信息时,图片回显就是在里面存放参数)
-            list-type: 限定上传的文件类型
-        -->
-        <el-upload
-            class="upload-demo"
-            action="http://localhost/file/ossUpload"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :on-success="handleSuccess"
-            :file-list="fileList"
-            list-type="picture">
-          <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload>
-      </el-form-item>
       <h3 class="title">管理员信息设置</h3>
       <el-form-item prop="admin.username" label="账号">
         <el-input type="text" v-model="shop.admin.username" auto-complete="off"
@@ -130,16 +108,16 @@ export default {
       //shop:shop 为了做数据表单校验不要嵌套对象
       shop: {
         admin: {
-          username: "user01",
-          phone: "13955552222",
-          email: "123@qq.com",
-          password: "123456",
-          confirmPassword: "123456"
+          username: "",
+          phone: "",
+          email: "",
+          password: "",
+          confirmPassword: ""
         },
-        name: '牛马宠物店',
-        address: '长城科技园',
-        logo: '123',
-        tel: '13922221111',
+        name: '',
+        address: '',
+        logo: 'https://javazfl.oss-cn-hangzhou.aliyuncs.com/company_logo/84737a6c6ed542e6bd4a090899fc47ac.jpg',
+        tel: '',
       },
       formRules: {
         name: [
